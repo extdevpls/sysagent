@@ -95,6 +95,9 @@ class API extends REST
     private  function systeminfo() {
         $file = "sysinfo.csv";
         $bat = shell_exec("systeminfo /FO CSV");
+        if (file_exists($file)) {
+            unlink($file);
+        }
         file_put_contents($file,iconv("cp437", "utf-8", $bat));
         $csv = array_map('str_getcsv', file($file));
         array_walk($csv, function(&$a) use ($csv) {
