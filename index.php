@@ -50,7 +50,7 @@ class API extends REST
     {
         $bat = shell_exec("scripts\browser_chrome.bat");
         $obj["host"]["name"]=$this->getHostname();
-        $obj["host"]["os"]=$this->getOSVersion();
+        $obj["windows"]["os"]=$this->getOSVersion();
         $obj["chrome"]["version"] = trim(str_replace("Version=", "", $bat));
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
@@ -72,7 +72,7 @@ class API extends REST
     {
         $bat = shell_exec("scripts\antivirus_gdata.bat");
         $obj["host"]["name"]=$this->getHostname();
-        $obj["host"]["os"]=$this->getOSVersion();
+        $obj["windows"]["os"]=$this->getOSVersion();
         $obj["gdata"]["version"] = trim($bat);
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
@@ -83,7 +83,7 @@ class API extends REST
     {
         $bat = shell_exec('reg query "HKLM\SYSTEM\CurrentControlSet\Services\UsbStor" /v Start');
         $obj["host"]["name"]=$this->getHostname();
-        $obj["host"]["os"]=$this->getOSVersion();
+        $obj["windows"]["os"]=$this->getOSVersion();
         $usboption = explode("    ", $bat);
         $obj["usb"]["storage"]["options"] = trim($usboption[3]);
         $dataJ = $this->json($obj);
@@ -95,7 +95,7 @@ class API extends REST
     {
         $bat = shell_exec('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions');
         $obj["host"]["name"]=$this->getHostname();
-        $obj["host"]["os"]=$this->getOSVersion();
+        $obj["windows"]["os"]=$this->getOSVersion();
         $windowsupdate = explode("    ", $bat);
         $obj["windows"]["update"]["options"] = trim($windowsupdate[3]);
         $dataJ = $this->json($obj);
