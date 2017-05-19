@@ -50,6 +50,7 @@ class API extends REST
     {
         $bat = shell_exec("scripts\browser_chrome.bat");
         $obj["chrome"]["version"] = trim(str_replace("Version=", "", $bat));
+        $obj["host"]=$this->getHostname();
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
 
@@ -58,6 +59,7 @@ class API extends REST
     private function firefox()
     {
         $bat = shell_exec("scripts\browser_firefox.bat");
+        $obj["host"]=$this->getHostname();
         $obj["firefox"]["version"] = trim(str_replace("Version=", "", $bat));
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
@@ -67,6 +69,7 @@ class API extends REST
     private function gdata()
     {
         $bat = shell_exec("scripts\antivirus_gdata.bat");
+        $obj["host"]=$this->getHostname();
         $obj["gdata"]["version"] = trim($bat);
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
@@ -76,6 +79,7 @@ class API extends REST
     private function usb()
     {
         $bat = shell_exec('reg query "HKLM\SYSTEM\CurrentControlSet\Services\UsbStor" /v Start');
+        $obj["host"]=$this->getHostname();
         $usboption = explode("    ", $bat);
         $obj["usb"]["storage"]["options"] = trim($usboption[3]);
         $dataJ = $this->json($obj);
@@ -86,6 +90,7 @@ class API extends REST
     private function windowsupdate()
     {
         $bat = shell_exec('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions');
+        $obj["host"]=$this->getHostname();
         $windowsupdate = explode("    ", $bat);
         $obj["windows"]["update"]["options"] = trim($windowsupdate[3]);
         $dataJ = $this->json($obj);
@@ -107,6 +112,10 @@ class API extends REST
         $this->response($this->indent($this->json($csv[0])), 200);
     }
 
+    private function getHostname() {
+        $bat = shell_exec("wmic computersystem  get name");
+        return $bat;
+    }
     /*
      *  Encode array into JSON
     */
