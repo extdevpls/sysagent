@@ -52,7 +52,7 @@ class API extends REST
         $this->response($this->indent($dataJ), 200);
     }
 
-    private function chrome($all = null) {
+    private function chrome($all = 0) {
         $bat = shell_exec("scripts\browser_chrome.bat");
         $obj["host"]["name"]=$this->getHostname();
         $obj["windows"]["os"]=$this->getOSVersion();
@@ -64,7 +64,7 @@ class API extends REST
         $this->response($this->indent($dataJ), 200);
     }
 
-    private function firefox($all = null) {
+    private function firefox($all = 0) {
         $bat = shell_exec("scripts\browser_firefox.bat");
         $obj["firefox"]["version"] = trim(str_replace("Version=", "", $bat));
         if($all) {
