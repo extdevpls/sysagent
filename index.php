@@ -119,9 +119,10 @@ class API extends REST
 
     private function agentupdate() {
     $bat = shell_exec('update.bat');
+    $updateInfo = explode("\n",$bat);
     $obj["host"]["name"]=$this->getHostname();
     $obj["windows"]["os"]=$this->getOSVersion();
-    $obj["sysagent"]["update"] = $bat;
+    $obj["sysagent"]["update"] = $updateInfo[1];
     $dataJ = $this->json($obj);
     $this->response($this->indent($dataJ), 200);
 
