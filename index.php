@@ -6,6 +6,7 @@ date_default_timezone_set("Europe/Berlin");
 class API extends REST
 {
     public $data = "";
+    private $browser = array();
     private $req = array();
 
     //Enter details of your database
@@ -43,24 +44,36 @@ class API extends REST
         $this->response('Error code 404, Page not found', 404);   // If the method not exist with in this class, response would be "Page not found".
     }
 
-    private function chrome() {
+    private function browser() {
+        array_merge($this->browser,$this->chrome(1);
+        array_merge($this->browser,$this->firefox(1);
+
+        $dataJ = $this->json($this->browser);
+        $this->response($this->indent($dataJ), 200);
+    }
+
+    private function chrome($all = null) {
         $bat = shell_exec("scripts\browser_chrome.bat");
         $obj["host"]["name"]=$this->getHostname();
         $obj["windows"]["os"]=$this->getOSVersion();
         $obj["chrome"]["version"] = trim(str_replace("Version=", "", $bat));
+        if($all) {
+            return $obj;
+        }
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
-
     }
 
-    private function firefox() {
+    private function firefox($all = null) {
         $bat = shell_exec("scripts\browser_firefox.bat");
+        $obj["firefox"]["version"] = trim(str_replace("Version=", "", $bat));
+        if($all) {
+            return $obj;
+        }
         $obj["host"]["name"]=$this->getHostname();
         $obj["host"]["os"]=$this->getOSVersion();
-        $obj["firefox"]["version"] = trim(str_replace("Version=", "", $bat));
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
-
     }
 
     private function gdata() {
@@ -76,7 +89,6 @@ class API extends REST
 
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
-
     }
 
     private function usb() {
@@ -87,7 +99,6 @@ class API extends REST
         $obj["usb"]["storage"]["options"] = trim($usboption[3]);
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
-
     }
 
     private function windowsupdate() {
@@ -128,7 +139,6 @@ class API extends REST
 
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
-
 }
 
     private function getHostname() {
