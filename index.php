@@ -123,7 +123,9 @@ class API extends REST
         $obj["host"]["name"] = $this->getHostname();
         $obj["windows"]["os"] = $this->getOSVersion();
         foreach ($updateInfo as $info) {
-            $obj["sysagent"]["update"][] = $info;
+            if($info != "") {
+                $obj["sysagent"]["update"][] = $info;
+            }
         }
 
         $dataJ = $this->json($obj);
