@@ -45,8 +45,8 @@ class API extends REST
     }
 
     private function browser() {
-        array_merge($this->browser,$this->chrome(1);
-        array_merge($this->browser,$this->firefox(1);
+        array_merge($this->browser,$this->chrome(1));
+        array_merge($this->browser,$this->firefox(1));
 
         $dataJ = $this->json($this->browser);
         $this->response($this->indent($dataJ), 200);
