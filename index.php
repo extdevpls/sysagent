@@ -71,9 +71,15 @@ class API extends REST
     private function gdata()
     {
         $bat = shell_exec("scripts\antivirus_gdata.bat");
+        $gdataInfo = explode("\n", $bat);
+        foreach ($gdataInfo as $info) {
+            if($info !="") {
+                $obj["gdata"][] = trim($info);
+            }
+        }
         $obj["host"]["name"]=$this->getHostname();
         $obj["windows"]["os"]=$this->getOSVersion();
-        $obj["gdata"]["version"] = trim($bat);
+
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
 
