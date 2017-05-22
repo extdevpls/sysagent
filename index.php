@@ -45,33 +45,35 @@ class API extends REST
     }
 
     private function browser() {
-        array_merge($this->browser,$this->chrome(1));
-        array_merge($this->browser,$this->firefox(1));
+        $obj["host"]["name"]=$this->getHostname();
+        $obj["host"]["os"]=$this->getOSVersion();
+        $obj["chrome"]["version"] = $this->chrome(1);
+        $obj["firefox"]["version"] = $this->firefox(1);
 
-        $dataJ = $this->json($this->browser);
+        $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
     }
 
-    private function chrome($all = 0) {
+    private function chrome($all = false) {
         $bat = shell_exec("scripts\browser_chrome.bat");
         $obj["host"]["name"]=$this->getHostname();
         $obj["windows"]["os"]=$this->getOSVersion();
         $obj["chrome"]["version"] = trim(str_replace("Version=", "", $bat));
-        if($all) {
-            return $obj;
+        if($all == true) {
+            return trim(str_replace("Version=", "", $bat));
         }
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
     }
 
-    private function firefox($all = 0) {
+    private function firefox($all = false) {
         $bat = shell_exec("scripts\browser_firefox.bat");
-        $obj["firefox"]["version"] = trim(str_replace("Version=", "", $bat));
-        if($all) {
-            return $obj;
-        }
         $obj["host"]["name"]=$this->getHostname();
         $obj["host"]["os"]=$this->getOSVersion();
+        $obj["firefox"]["version"] = trim(str_replace("Version=", "", $bat));
+        if($all == true) {
+            return trim(str_replace("Version=", "", $bat));
+        }
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
     }
