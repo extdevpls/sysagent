@@ -16,14 +16,12 @@ class API extends REST
 
     private $db = NULL;
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();              // Init parent contructor
         //$this->dbConnect();                 // Initiate Database connection
     }
 
-    private function dbConnect()
-    {
+    private function dbConnect() {
         $this->db = mysql_connect(self::DB_SERVER, self::DB_USER, self::DB_PASSWORD);
         if ($this->db)
             mysql_select_db(self::DB, $this->db);
@@ -34,8 +32,7 @@ class API extends REST
      * This method dynmically call the method based on the query string
      *
      */
-    public function processApi()
-    {
+    public function processApi() {
         $this->req = explode('/', $_SERVER["REQUEST_URI"]);
         $func = strtolower(trim($this->req[1]));
         $request = explode('/', trim($_SERVER["REQUEST_URI"], '/'));
@@ -46,8 +43,7 @@ class API extends REST
         $this->response('Error code 404, Page not found', 404);   // If the method not exist with in this class, response would be "Page not found".
     }
 
-    private function chrome()
-    {
+    private function chrome() {
         $bat = shell_exec("scripts\browser_chrome.bat");
         $obj["host"]["name"]=$this->getHostname();
         $obj["windows"]["os"]=$this->getOSVersion();
@@ -57,8 +53,7 @@ class API extends REST
 
     }
 
-    private function firefox()
-    {
+    private function firefox() {
         $bat = shell_exec("scripts\browser_firefox.bat");
         $obj["host"]["name"]=$this->getHostname();
         $obj["host"]["os"]=$this->getOSVersion();
@@ -68,25 +63,23 @@ class API extends REST
 
     }
 
-    private function gdata()
-    {
+    private function gdata() {
         $bat = shell_exec("scripts\antivirus_gdata.bat");
         $gdataInfo = explode("\n", $bat);
+        $obj["host"]["name"]=$this->getHostname();
+        $obj["windows"]["os"]=$this->getOSVersion();
         foreach ($gdataInfo as $info) {
             if($info !="") {
                 $obj["gdata"][] = trim($info);
             }
         }
-        $obj["host"]["name"]=$this->getHostname();
-        $obj["windows"]["os"]=$this->getOSVersion();
 
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
 
     }
 
-    private function usb()
-    {
+    private function usb() {
         $bat = shell_exec('reg query "HKLM\SYSTEM\CurrentControlSet\Services\UsbStor" /v Start');
         $obj["host"]["name"]=$this->getHostname();
         $obj["windows"]["os"]=$this->getOSVersion();
@@ -97,8 +90,7 @@ class API extends REST
 
     }
 
-    private function windowsupdate()
-    {
+    private function windowsupdate() {
         $bat = shell_exec('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions');
         $obj["host"]["name"]=$this->getHostname();
         $obj["windows"]["os"]=$this->getOSVersion();
@@ -151,8 +143,7 @@ class API extends REST
     /*
      *  Encode array into JSON
     */
-    private function json($data)
-    {
+    private function json($data) {
         if (is_array($data)) {
             return json_encode($data);
         }
@@ -165,9 +156,7 @@ class API extends REST
      *
      * @return string Indented version of the original JSON string.
      */
-    private function indent($json)
-    {
-
+    private function indent($json) {
         $result = '';
         $pos = 0;
         $strLen = strlen($json);
