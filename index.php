@@ -118,13 +118,16 @@ class API extends REST
     }
 
     private function agentupdate() {
-    $bat = shell_exec('update.bat');
-    $updateInfo = explode("\n",$bat);
-    $obj["host"]["name"]=$this->getHostname();
-    $obj["windows"]["os"]=$this->getOSVersion();
-    $obj["sysagent"]["update"] = $updateInfo[1];
-    $dataJ = $this->json($obj);
-    $this->response($this->indent($dataJ), 200);
+        $bat = shell_exec('update.bat');
+        $updateInfo = explode("\n", $bat);
+        $obj["host"]["name"] = $this->getHostname();
+        $obj["windows"]["os"] = $this->getOSVersion();
+        foreach ($updateInfo as $info) {
+            $obj["sysagent"]["update"][] = $info;
+        }
+
+        $dataJ = $this->json($obj);
+        $this->response($this->indent($dataJ), 200);
 
 }
 
