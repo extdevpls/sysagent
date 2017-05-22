@@ -45,37 +45,21 @@ class API extends REST
     }
 
     private function browser() {
-        $obj["host"]["name"]=$this->getHostname();
-        $obj["host"]["os"]=$this->getOSVersion();
-        $obj["chrome"]["version"] = $this->chrome(1);
-        $obj["firefox"]["version"] = $this->firefox(1);
-
+        $obj["chrome"] = $this->chrome(1);
+        $obj["firefox"] = $this->firefox(1);
+        return $obj;
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
     }
 
-    private function chrome($all = false) {
+    private function chrome() {
         $bat = shell_exec("scripts\browser_chrome.bat");
-        $obj["host"]["name"]=$this->getHostname();
-        $obj["windows"]["os"]=$this->getOSVersion();
-        $obj["chrome"]["version"] = trim(str_replace("Version=", "", $bat));
-        if($all == true) {
-            return trim(str_replace("Version=", "", $bat));
-        }
-        $dataJ = $this->json($obj);
-        $this->response($this->indent($dataJ), 200);
+        return trim(str_replace("Version=", "", $bat));
     }
 
-    private function firefox($all = false) {
+    private function firefox() {
         $bat = shell_exec("scripts\browser_firefox.bat");
-        $obj["host"]["name"]=$this->getHostname();
-        $obj["host"]["os"]=$this->getOSVersion();
-        $obj["firefox"]["version"] = trim(str_replace("Version=", "", $bat));
-        if($all == true) {
-            return trim(str_replace("Version=", "", $bat));
-        }
-        $dataJ = $this->json($obj);
-        $this->response($this->indent($dataJ), 200);
+        return trim(str_replace("Version=", "", $bat));
     }
 
     private function gdata() {
@@ -103,14 +87,11 @@ class API extends REST
         $this->response($this->indent($dataJ), 200);
     }
 
-    private function windowsupdate() {
-        $bat = shell_exec('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions');
-        $obj["host"]["name"]=$this->getHostname();
-        $obj["windows"]["os"]=$this->getOSVersion();
+    private function AUOption() {
+        $bat = shell_exec('scripts\windows_auoption.bat');
+        echo $bat;
         $windowsupdate = explode("    ", $bat);
-        $obj["windows"]["update"]["options"] = trim($windowsupdate[3]);
-        $dataJ = $this->json($obj);
-        $this->response($this->indent($dataJ), 200);
+        return $windowsupdate;
     }
 
     private  function systeminfo() {
@@ -125,7 +106,40 @@ class API extends REST
             $a = array_combine($csv[0], $a);
         });
         array_shift($csv); # remove column header
-        $this->response($this->indent($this->json($csv[0])), 200);
+        foreach ($csv[0] as $item => $c) {
+            if (in_array($item, array("Hostname", "Systemtyp", "Betriebssystemname", "Betriebssystemversion","Gesamter physischer Speicher"))) {
+                $value = $c;
+                $item = strtolower($item);
+                $part = "OperatingSystem";
+
+                if($item == "gesamter physischer speicher") {
+                    $item = "memory";
+                    $value = intval($c*1024);
+                }
+                if ($item == "systemtyp") {
+
+                    $item = "architecture";
+                    if(strstr($c, 'x64')) {
+                        $value = "amd64";
+                    } else {
+                        $value = "i386";
+                    }
+                }
+                if ($item == "betriebssystemversion") {
+                    $item = "osversion";
+                    $value = str_replace(" Nicht zutreffend Build 9600", "", $c);
+                }
+                if ($item == "betriebssystemname")
+                    $item = "osname";
+
+                $data[$part][$item]=$value;
+            }
+        }
+
+        $data[$part]["AUOption"] = $this->AUOption();
+        $data["browser"]["chrome"] = $this->chrome();
+        $data["browser"]["firefox"] = $this->firefox();
+        $this->response($this->indent($this->json($data)), 200);
     }
 
     private function agentupdate() {
@@ -141,7 +155,7 @@ class API extends REST
 
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
-}
+    }
 
     private function getHostname() {
         $bat = shell_exec("wmic computersystem  get name");
