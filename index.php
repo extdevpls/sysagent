@@ -124,7 +124,7 @@ class API extends REST
         $obj["windows"]["os"] = $this->getOSVersion();
         foreach ($updateInfo as $info) {
             if($info != "") {
-                $obj["sysagent"]["update"][] = $info;
+                $obj["sysagent"]["update"][] = trim($info);
             }
         }
 
