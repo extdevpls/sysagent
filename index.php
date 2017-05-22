@@ -117,6 +117,16 @@ class API extends REST
         $this->response($this->indent($this->json($csv[0])), 200);
     }
 
+    private function agentupdate() {
+    $bat = shell_exec('update.bat');
+    $obj["host"]["name"]=$this->getHostname();
+    $obj["windows"]["os"]=$this->getOSVersion();
+    $obj["sysagent"]["update"] = $bat;
+    $dataJ = $this->json($obj);
+    $this->response($this->indent($dataJ), 200);
+
+}
+
     private function getHostname() {
         $bat = shell_exec("wmic computersystem  get name");
         return str_replace("Name       \r\n","",trim($bat));
