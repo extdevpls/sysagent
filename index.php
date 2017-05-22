@@ -119,7 +119,7 @@ class API extends REST
 
     private function getHostname() {
         $bat = shell_exec("wmic computersystem  get name");
-        return str_replace("Name      \r\n","",trim($bat));
+        return str_replace("Name       \r\n","",trim($bat));
     }
 
     private function getOSVersion() {
