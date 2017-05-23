@@ -70,9 +70,10 @@ class API extends REST
                 $obj["gdata"][] = trim($info);
             }
         }
-        return $obj;
 
         $dataJ = $this->json($obj);
+
+        return $dataJ;
         $this->response($this->indent($dataJ), 200);
     }
 
@@ -150,7 +151,7 @@ class API extends REST
         $data[$part]["USB Mass storage"] = trim($this->usb());
         $data["browser"]["chrome"] = $this->chrome();
         $data["browser"]["firefox"] = $this->firefox();
-        $data["antivirus"][] = $this->gdata();
+        $data["antivirus"] = $this->gdata();
         $this->response($this->indent($this->json($data)), 200);
     }
 
