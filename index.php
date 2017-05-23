@@ -67,13 +67,8 @@ class API extends REST
         $bat = shell_exec("scripts\antivirus_gdata.bat");
         $gdataInfo = explode("\n", $bat);
         foreach ($gdataInfo as $info) {
-            $values = explode(":",$info);
-            //print_r($values);
-            if($info !="") {
-                if (strstr("-> Connect",$info)) {
-                    $dataJ = $this->json($obj);
-                    $this->response($this->indent($dataJ), 200);
-                }
+            $values = explode(":", $info);
+            if ($values[1] != "") {
                 $obj["gdata"][$values[0]] = trim($values[1]);
             }
         }
