@@ -78,19 +78,17 @@ class API extends REST
     }
 
     private function usb() {
-        $bat = shell_exec('reg query "HKLM\SYSTEM\CurrentControlSet\Services\UsbStor" /v Start');
-        $obj["host"]["name"]=$this->getHostname();
-        $obj["windows"]["os"]=$this->getOSVersion();
+        $bat = shell_exec('scripts\windows_massstorage.bat');
         $usboption = explode("    ", $bat);
-        $obj["usb"]["storage"]["options"] = trim($usboption[3]);
-        $dataJ = $this->json($obj);
-        $this->response($this->indent($dataJ), 200);
+
+        return trim($usboption[3]);
     }
 
     private function AUOption() {
         $bat = shell_exec('scripts\windows_auoption.bat');
         $windowsupdate = explode("    ", $bat);
-        return $windowsupdate[3];
+
+        return trim($windowsupdate[3]);
     }
 
     private  function systeminfo() {
