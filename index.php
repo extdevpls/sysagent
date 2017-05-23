@@ -68,12 +68,12 @@ class API extends REST
         foreach ($gdataInfo as $info) {
             if($info !="") {
                 $obj["gdata"][] = trim($info);
+                $av[] = trim($info);
             }
         }
+        return $av;
 
         $dataJ = $this->json($obj);
-
-        return $dataJ;
         $this->response($this->indent($dataJ), 200);
     }
 
