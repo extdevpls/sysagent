@@ -72,7 +72,7 @@ class API extends REST
             }
         }
         print_r($av);
-        if (is_array($av)
+        if (is_array($av))
             return $av;
         else
             return null;
