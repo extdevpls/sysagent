@@ -68,12 +68,15 @@ class API extends REST
         $gdataInfo = explode("\n", $bat);
         foreach ($gdataInfo as $info) {
             $values = explode(":", $info);
+            if(strstr("-> Connecting",$values[0])) {
+                $this->response($this->indent($this->json($obj)), 200);
+                return;
+            }
+
             if ($values[1] != "") {
                 $obj["gdata"][$values[0]] = trim($values[1]);
             }
         }
-
-        $this->response($this->indent($this->json($obj)), 200);
     }
 
     private function usb() {
