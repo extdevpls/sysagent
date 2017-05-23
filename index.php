@@ -150,7 +150,6 @@ class API extends REST
         $data[$part]["USB Mass storage"] = trim($this->usb());
         $data["browser"]["chrome"] = $this->chrome();
         $data["browser"]["firefox"] = $this->firefox();
-        $data["antivirus"] = $this->gdata();
         $this->response($this->indent($this->json($data)), 200);
     }
 
