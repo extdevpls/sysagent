@@ -68,7 +68,7 @@ class API extends REST
         $gdataInfo = explode("\n", $bat);
         foreach ($gdataInfo as $info) {
             $values = explode(":", $info);
-            if(strstr("-> Connecting",$values[0])) {
+            if(strstr($values[0], "-> Connecting")) {
                 $this->response($this->indent($this->json($obj)), 200);
                 return;
             }
