@@ -73,7 +73,7 @@ class API extends REST
                 return;
             }
 
-            if ($values[1] != "" && $values[1] != "Processing command" && $values[1] != "Scan settings") {
+            if ($values[1] != "" && $values[0] != "Processing command" && $values[0] != "Scan settings") {
                 $obj["gdata"][$values[0]] = trim($values[1]);
             }
         }
