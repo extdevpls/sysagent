@@ -63,17 +63,18 @@ class API extends REST
     }
 
     private function gdata() {
+        $obj = array();
         $bat = shell_exec("scripts\antivirus_gdata.bat");
         $gdataInfo = explode("\n", $bat);
         foreach ($gdataInfo as $info) {
             if($info !="") {
+                if (strstr("-> Connect",$info)) {
+                    $dataJ = $this->json($obj);
+                    $this->response($this->indent($dataJ), 200);
+                }
                 $obj["gdata"][] = trim($info);
             }
         }
-
-
-        $dataJ = $this->json($obj);
-        $this->response($this->indent($dataJ), 200);
     }
 
     private function usb() {
