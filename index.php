@@ -71,7 +71,7 @@ class API extends REST
                 $av[] = trim($info);
             }
         }
-        print_r($av);
+        print_r($obj);
         if (is_array($av))
             return $av;
         else
