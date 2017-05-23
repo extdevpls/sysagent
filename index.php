@@ -65,13 +65,12 @@ class API extends REST
     private function gdata() {
         $bat = shell_exec("scripts\antivirus_gdata.bat");
         $gdataInfo = explode("\n", $bat);
-        $obj["host"]["name"]=$this->getHostname();
-        $obj["windows"]["os"]=$this->getOSVersion();
         foreach ($gdataInfo as $info) {
             if($info !="") {
                 $obj["gdata"][] = trim($info);
             }
         }
+        return $obj;
 
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
@@ -100,6 +99,7 @@ class API extends REST
 
 
         }
+
         return $ret;
     }
 
@@ -150,6 +150,7 @@ class API extends REST
         $data[$part]["USB Mass storage"] = trim($this->usb());
         $data["browser"]["chrome"] = $this->chrome();
         $data["browser"]["firefox"] = $this->firefox();
+        $data["antivirus"] = $this->gdata();
         $this->response($this->indent($this->json($data)), 200);
     }
 
