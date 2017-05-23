@@ -119,9 +119,9 @@ class API extends REST
 
                     $item = "architecture";
                     if(strstr($c, 'x64')) {
-                        $value = "amd64";
+                        $value = "AMD64";
                     } else {
-                        $value = "i386";
+                        $value = "X86";
                     }
                 }
                 if (in_array($item, array("betriebssystemversion","os version"))) {
