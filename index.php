@@ -86,9 +86,20 @@ class API extends REST
 
     private function AUOption() {
         $bat = shell_exec('scripts\windows_auoption.bat');
-        $windowsupdate = explode("    ", $bat);
+        $fileds = explode("    ", $bat);
+        switch (trim($fields[3])) {
+            case "0x2":
+                $ret = "Notify for download and notify for install";
+                break;
+            case "0x3":
+                $ret = "Auto download and notify for install";
+                break;
+            case "0x4":
+                $ret = "Auto download and schedule the install";
+                break;
 
-        return trim($windowsupdate[3]);
+            return $ret;
+        }
     }
 
     private  function systeminfo() {
