@@ -71,7 +71,11 @@ class API extends REST
                 $av[] = trim($info);
             }
         }
-        return $av;
+        print_r($av);
+        if (is_array($av)
+            return $av;
+        else
+            return null;
 
         $dataJ = $this->json($obj);
         $this->response($this->indent($dataJ), 200);
