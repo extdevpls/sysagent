@@ -135,6 +135,7 @@ class API extends REST
         }
         //print_r($csv);
         $data[$part]["AUOption"] = trim($this->AUOption());
+        $data[$part]["USB Mass storage"] = trim($this->usb());
         $data["browser"]["chrome"] = $this->chrome();
         $data["browser"]["firefox"] = $this->firefox();
         $this->response($this->indent($this->json($data)), 200);
