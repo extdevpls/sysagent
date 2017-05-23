@@ -136,7 +136,7 @@ class API extends REST
             }
         }
         //print_r($csv);
-        $data[$part]["AUOption"] = $this->AUOption();
+        $data[$part]["AUOption"] = trim($this->AUOption());
         $data["browser"]["chrome"] = $this->chrome();
         $data["browser"]["firefox"] = $this->firefox();
         $this->response($this->indent($this->json($data)), 200);
