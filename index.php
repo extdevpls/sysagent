@@ -86,7 +86,7 @@ class API extends REST
 
     private function AUOption() {
         $bat = shell_exec('scripts\windows_auoption.bat');
-        $fileds = explode("    ", $bat);
+        $fields = explode("    ", $bat);
         switch (trim($fields[3])) {
             case "0x2":
                 $ret = "Notify for download and notify for install";
