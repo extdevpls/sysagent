@@ -106,16 +106,16 @@ class API extends REST
         });
         array_shift($csv); # remove column header
         foreach ($csv[0] as $item => $c) {
-            if (in_array($item, array("Hostname", "Systemtyp", "Betriebssystemname", "Betriebssystemversion","Gesamter physischer Speicher"))) {
+            if (in_array($item, array("Hostname", "Systemtyp", "Betriebssystemname", "Betriebssystemversion","Gesamter physischer Speicher", "Host Name", "OS Name", "OS Version", "System Type", "Total Physical Memory"))) {
                 $value = $c;
                 $item = strtolower($item);
                 $part = "OperatingSystem";
 
-                if($item == "gesamter physischer speicher") {
+                if(in_array($item, array("gesamter physischer speicher","total physical memory"))) {
                     $item = "memory";
                     $value = intval($c*1024);
                 }
-                if ($item == "systemtyp") {
+                if (in_array($item, array("systemtyp","system type"))) {
 
                     $item = "architecture";
                     if(strstr($c, 'x64')) {
@@ -124,12 +124,13 @@ class API extends REST
                         $value = "i386";
                     }
                 }
-                if ($item == "betriebssystemversion") {
+                if (in_array($item, array("betriebssystemversion","os version"))) {
                     $item = "osversion";
                     $value = str_replace(" Nicht zutreffend Build 9600", "", $c);
                 }
-                if ($item == "betriebssystemname")
+                if (in_array($item, array("betriebssystemname","os name"))) {
                     $item = "osname";
+                }
 
                 $data[$part][$item]=$value;
             }
