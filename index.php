@@ -135,7 +135,7 @@ class API extends REST
                 $data[$part][$item]=$value;
             }
         }
-        print_r($csv);
+        //print_r($csv);
         $data[$part]["AUOption"] = $this->AUOption();
         $data["browser"]["chrome"] = $this->chrome();
         $data["browser"]["firefox"] = $this->firefox();
