@@ -74,7 +74,7 @@ class API extends REST
                     $dataJ = $this->json($obj);
                     $this->response($this->indent($dataJ), 200);
                 }
-                $obj["gdata"][] = trim($info);
+                $obj["gdata"][$values[0]] = trim($values[1]);
             }
         }
     }
