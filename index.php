@@ -98,8 +98,9 @@ class API extends REST
                 $ret = "Auto download and schedule the install";
                 break;
 
-            return $ret;
+
         }
+        return $ret;
     }
 
     private  function systeminfo() {
