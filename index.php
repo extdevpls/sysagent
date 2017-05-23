@@ -89,9 +89,8 @@ class API extends REST
 
     private function AUOption() {
         $bat = shell_exec('scripts\windows_auoption.bat');
-        echo $bat;
         $windowsupdate = explode("    ", $bat);
-        return $windowsupdate;
+        return $windowsupdate[3];
     }
 
     private  function systeminfo() {
